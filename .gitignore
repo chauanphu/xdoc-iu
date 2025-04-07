@@ -11,3 +11,4 @@ wheels/
 *.env
 
 *_model.json
+mongo_data
