@@ -2,7 +2,7 @@ services:
   app:
     build: .
     container_name: fastapi-xdoc
-    image: fastapi-xdoc:1.0.0
+    image: fastapi-xdoc:1.0.1
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 5s
