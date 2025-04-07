@@ -45,11 +45,9 @@ async def predict_diabetes(payload: DiabetesInput):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-    preprocessed = predictor.preprocess(payload.model_dump())
-    raw_pred = predictor.predict(preprocessed)
-    result = predictor.postprocess(raw_pred)
-
+    result = predictor.predict(payload.model_dump())
     return result
+
 @router.post("/predict/cardiovascular/")
 async def predict_cardiovascular(payload: CardioInput):
     try:
