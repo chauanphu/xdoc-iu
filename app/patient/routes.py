@@ -20,6 +20,8 @@ async def list_patients(db: AsyncIOMotorDatabase = Depends(get_database)):
 async def create_patient(patient_create: PatientCreate, db: AsyncIOMotorDatabase = Depends(get_database)):
     # Hash the password before storing
     # Create the account in the database
+    if not PatientCreate.is_strong_password(patient_create.password):
+        raise HTTPException(status_code=400, detail="Weak password")
     account_data = {
         "_id": str(uuid.uuid4()),
         "email": patient_create.email,

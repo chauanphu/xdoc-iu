@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from enum import Enum
 from typing import Optional
+import re
 
 class GenderEnum(str, Enum):
     MALE = "MALE"
@@ -11,7 +12,7 @@ class GenderEnum(str, Enum):
     OTHER = "OTHER"
 
 class PatientBaseModel(BaseModel):
-    id: Optional[ObjectId] | Optional[str] = Field(alias="_id", default=None)  
+    id: Optional[str] = Field(alias="_id", default=None)  
     name: str
     dob: datetime
     gender: GenderEnum
@@ -29,7 +30,14 @@ class PatientProfile(PatientBaseModel):
 
     class Config:
         validate_by_name = True
+        arbitrary_types_allowed=True
 
 class PatientCreate(PatientProfile):
     password: str  # Password for the patient, if applicable
     email: str  # Email for the patient, if applicable
+
+    @staticmethod
+    def is_strong_password(password: str) -> bool:
+        # Ensure password has at least 8 characters, one uppercase, one lowercase, one digit, and one special character
+        pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+        return bool(re.match(pattern, password))
