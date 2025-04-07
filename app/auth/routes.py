@@ -1,7 +1,7 @@
 # auth/routes.py
 import uuid
 from datetime import timedelta
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from auth.models import AccountCreate, AccountOut, Token
 from auth.services import (

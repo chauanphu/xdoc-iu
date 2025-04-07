@@ -14,8 +14,7 @@ async def list_patients(db: AsyncIOMotorDatabase = Depends(get_database)):
     patients = await db["patients"].find().to_list(length=100)
     if not patients:
         raise HTTPException(status_code=404, detail="No patients found")
-    response = [PatientBaseModel(**patient) for patient in patients]
-    return response 
+    return patients 
 
 @router.post("/")
 async def create_patient(patient_create: PatientCreate, db: AsyncIOMotorDatabase = Depends(get_database)):

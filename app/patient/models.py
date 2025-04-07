@@ -1,4 +1,5 @@
 # patient/models.py
+from bson import ObjectId
 from pydantic import BaseModel, Field
 from datetime import datetime
 from enum import Enum
@@ -10,22 +11,25 @@ class GenderEnum(str, Enum):
     OTHER = "OTHER"
 
 class PatientBaseModel(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")
+    id: Optional[ObjectId] | Optional[str] = Field(alias="_id", default=None)  
     name: str
     dob: datetime
     gender: GenderEnum
     age: int
+
+    class Config:
+        json_encoders = json_encoders = {ObjectId: str}  # Ensures ObjectId is serialized to a string
+        populate_by_name = True
+        validate_assignment = True
+        arbitrary_types_allowed=True
 
 class PatientProfile(PatientBaseModel):
     tenant_id: Optional[str] = None  # Patient may be standalone or assigned to a tenant
     account_id: str = None
 
     class Config:
-        allow_population_by_field_name = True
+        validate_by_name = True
 
 class PatientCreate(PatientProfile):
     password: str  # Password for the patient, if applicable
     email: str  # Email for the patient, if applicable
-
-    class Config:
-        allow_population_by_field_name = True
