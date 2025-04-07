@@ -1,4 +1,21 @@
 services:
+  app:
+    build: .
+    container_name: fastapi-xdoc
+    image: fastapi-xdoc:1.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    networks:
+      - my-network
+      - shared-network
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+
   mongodb:
     image: mongo:6.0
     container_name: mongodb-xdoc
@@ -13,3 +30,6 @@ services:
 networks:
   my-network:
     driver: bridge
+  shared-network:
+    external: true
+    name: nginx-network

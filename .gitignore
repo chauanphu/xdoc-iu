@@ -5,10 +5,11 @@ build/
 dist/
 wheels/
 *.egg-info
-
+.vscode
 # Virtual environments
 .venv
 *.env
 
 *_model.json
 mongo_data
+tests
