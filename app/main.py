@@ -1,6 +1,5 @@
 # app.py
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI
 # from model import load_model, predict
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn

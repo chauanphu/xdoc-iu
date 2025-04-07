@@ -6,6 +6,7 @@ My application called XDoc predicts the diabetes (XGBoost) and explain its featu
 
 This is the Server-side API. It manages the authentication, authorization; diseases prediction; managing patient profile (with database).
 
+## Features
 The system should has components for:
 - Authentication / Authorization: logged in as patient or doctor.
 - ML Model: inference, data preprocessing, data postprocessing
@@ -13,7 +14,7 @@ The system should has components for:
 - Patient Profile Management: user info (encrypted), each patient can be independent or assigned to an EHR of a hospital
 - Hospital / Tenant Management: manages its corresponding doctors, patients and EHR system.
 
-Folder structure:
+## Folder structure:
 app/
 ├── app.py                        # Main entrypoint to initialize FastAPI, middleware, and routing
 ├── config/
@@ -51,7 +52,6 @@ app/
 │   └── services.py               # Business logic for tenant management
 ├── db/
 │   ├── __init__.py
-│   ├── base.py                   # Base class for SQLAlchemy models
 │   └── session.py                # Database session and connection management
 ├── tests/
 │   ├── __init__.py
