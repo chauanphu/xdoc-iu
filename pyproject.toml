@@ -17,3 +17,6 @@ dependencies = [
     "streamlit>=1.44.0",
     "xgboost>=3.0.0",
 ]
+
+[tool.uv.workspace]
+members = ["app"]
