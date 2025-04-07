@@ -1,8 +1,7 @@
 # auth/services.py
 from datetime import datetime, timedelta
 from typing import Optional
-import uuid
-import jwt
+from jose import jwt, JWTError  # Import JWTError from jose
 import bcrypt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -41,7 +40,7 @@ def verify_token(token: str) -> TokenData:
                 detail="Invalid authentication credentials"
             )
         return TokenData(email=email, role=role)
-    except jwt.PyJWTError:
+    except JWTError:  # Use JWTError from jose instead of PyJWTError
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials"
