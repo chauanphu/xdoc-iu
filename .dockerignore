@@ -9,3 +9,7 @@ README.md
 Dockerfile
 .gitignore
 .vscode
+tests
+*.env
+Dockerfile
+*.md
