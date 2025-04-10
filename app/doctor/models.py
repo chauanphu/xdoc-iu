@@ -8,4 +8,4 @@ class Doctor(BaseModel):
     tenant_id: str  # Reference to a Tenant document
 
     class Config:
-        allow_population_by_field_name = True
+        validate_by_name = True

@@ -8,7 +8,7 @@ def get_predictor(disease: str):
                 scaler_path="pretrained/diabetes.scaler.pkl",
             )
         elif disease.lower() == "cardiovascular":
-            return CardioPredictor(model_path="pretrained/cardio_model.json")
+            return CardioPredictor(model_path="pretrained/heart_model.pkl")
         else:
             raise ValueError("Unsupported disease type")
     except Exception as e:

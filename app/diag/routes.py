@@ -53,12 +53,12 @@ async def predict_cardiovascular(payload: CardioInput):
     try:
         predictor = get_predictor(DiseaseEnum.CARDIOVASCULAR)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
+    if not predictor:
+        raise HTTPException(status_code=500, detail="Model not found")
     
-    preprocessed = predictor.preprocess(payload.model_dump())
-    raw_pred = predictor.predict(preprocessed)
-    result = predictor.postprocess(raw_pred)
-    return result
+    response = predictor.predict(payload.model_dump())
+    return response
 
 @router.get("/explain/{diag_id}")
 async def explain_disease(diag_id: str, level: int = 0):

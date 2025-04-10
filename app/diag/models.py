@@ -28,12 +28,41 @@ DIABETES_OUTPUT = {
     2: "diabetes",
 }
 
+class OrdinalEncoder(str, Enum):
+    HIGH = "High"
+    LOW = "Low"
+    MEDIUM = "Medium"
+
+class BinaryEncoder(str, Enum):
+    YES = "Yes"
+    NO = "No"
+
+class GenderEnum(str, Enum):
+    MALE = "Male"
+    FEMALE = "Female"
+
 class CardioInput(BaseModel):
     # Cardiovascular-specific input features
-    systolic_bp: float
-    diastolic_bp: float
-    cholesterol: float
     age: int
+    gender: GenderEnum
+    blood_pressure: float
+    cholesterol_level: float
+    exercise_habits: Optional[OrdinalEncoder] = None
+    smoking: Optional[BinaryEncoder] = None
+    family_heart_disease: Optional[BinaryEncoder] = None
+    diabetes: Optional[BinaryEncoder] = None
+    bmi: Optional[float] = None
+    high_blood_pressure: Optional[BinaryEncoder] = None
+    low_hdl_cholesterol: Optional[BinaryEncoder] = None
+    high_ldl_cholesterol: Optional[BinaryEncoder] = None
+    alcohol_consumption: Optional[OrdinalEncoder] = None
+    stress_level: Optional[BinaryEncoder] = None
+    sleep_hours: Optional[float] = None
+    sugar_consumption: Optional[OrdinalEncoder] = None
+    triglyceride_level: Optional[float] = None
+    fasting_blood_sugar: Optional[float] = None
+    crp_level: Optional[float] = None
+    homocysteine_level: Optional[float] = None
 
 class DiagnosisBase(BaseModel):
     id: Optional[str] = Field(None, alias="_id")
@@ -59,8 +88,8 @@ class DiagnosisCreate(DiagnosisBase):
 
 class DiagnosisOut(DiagnosisBase):
     class Config:
-        orm_mode = True
-        allow_population_by_field_name = True
+        from_attributes = True
+        validate_by_name = True
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }

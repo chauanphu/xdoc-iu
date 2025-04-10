@@ -8,6 +8,7 @@ import joblib
 import os
 import shap
 from .gemini import generate, prepare_prompt
+from sklearn.pipeline import Pipeline
 
 class DiseasePredictor(ABC):
     @abstractmethod
@@ -82,21 +83,35 @@ class DiabetesPredictor(DiseasePredictor):
 
 class CardioPredictor(DiseasePredictor):
     def __init__(self, model_path: str):
-        self.model = xgb.Booster()
-        self.model.load_model(model_path)
-    
+        if not os.path.exists(model_path):
+            raise ValueError(f"Model path {model_path} does not exist.")
+        self.pipelie: Pipeline = joblib.load(model_path)
+        self.model: xgb.XGBClassifier = self.pipelie.named_steps["model"]
+        self.explainer = shap.TreeExplainer(self.model)
+        self.preprocessor = self.pipelie.named_steps["preprocessor"]
+        self.FEATURES: list[str] = ['age', 'gender', 'blood_pressure', 'cholesterol_level',
+       'exercise_habits', 'smoking', 'family_heart_disease', 'diabetes', 'bmi',
+       'high_blood_pressure', 'low_hdl_cholesterol', 'high_ldl_cholesterol',
+       'alcohol_consumption', 'stress_level', 'sleep_hours',
+       'sugar_consumption', 'triglyceride_level', 'fasting_blood_sugar',
+       'crp_level', 'homocysteine_level']
+
     def preprocess(self, data: dict) -> np.ndarray:
-        # Extract diabetes-specific features
-        features = np.array([data[k] for k in sorted(data.keys()) if k in ["glucose", "bmi", "age"]])
-        return features.reshape(1, -1)
+        df: pd.DataFrame = pd.DataFrame([data])
+        df = df[self.FEATURES]
+        features = df.values
+        return features.flatten(), df
 
-    def predict(self, preprocessed_data: np.ndarray) -> dict:
-        dmatrix = xgb.DMatrix(preprocessed_data)
-        preds = self.model.predict(dmatrix)
-        return {"raw_prediction": preds}
+    def predict(self, data: dict) -> dict:
+        raw_features, df = self.preprocess(data)
+        X_transformed = self.preprocessor.transform(df)
+        preds = self.model.predict_proba(X_transformed)
+        preds = preds.reshape(1, -1)[0]
+        shap_values = self.explainer.shap_values(X_transformed)
+        response = self.postprocess(preds)
+        return response
 
-    def postprocess(self, raw_prediction: dict) -> dict:
-        preds = raw_prediction["raw_prediction"]
+    def postprocess(self, preds: dict) -> dict:
         confidence = float(preds.max())
         prediction = int(preds.argmax())
         return {"prediction": prediction, "confidence": confidence}
