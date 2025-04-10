@@ -11,16 +11,16 @@ class DiseaseEnum(str, Enum):
     
 class DiabetesInput(BaseModel):
     # Diabetes-specific input features
-    BMI: float
-    AGE: int
-    Urea: Optional[float] = None
-    Cr: Optional[float] = None
-    HbA1c: Optional[float] = None
-    Chol: Optional[float] = None
-    TG: Optional[float] = None
-    HDL: Optional[float] = None
-    LDL: Optional[float] = None
-    VLDL: Optional[float] = None
+    BMI: float = Field(None, gt=0.0)
+    AGE: int = Field(None, gt=0.0)
+    Urea: Optional[float] = Field(None, gt=0.0)
+    Cr: Optional[float] = Field(None, gt=0.0)
+    HbA1c: Optional[float] = Field(None, gt=0.0)
+    Chol: Optional[float] = Field(None, gt=0.0)
+    TG: Optional[float] = Field(None, gt=0.0)
+    HDL: Optional[float] = Field(None, gt=0.0)
+    LDL: Optional[float] = Field(None, gt=0.0)
+    VLDL: Optional[float] = Field(None, gt=0.0)
 
 DIABETES_OUTPUT = {
     0: "negative",
@@ -45,8 +45,8 @@ class CardioInput(BaseModel):
     # Cardiovascular-specific input features
     age: int
     gender: GenderEnum
-    blood_pressure: float
-    cholesterol_level: float
+    blood_pressure: float = Field(None, gt=0.0)  # Systolic blood pressure
+    cholesterol_level: float = Field(None, gt=0.0)  # Total cholesterol level
     exercise_habits: Optional[OrdinalEncoder] = None
     smoking: Optional[BinaryEncoder] = None
     family_heart_disease: Optional[BinaryEncoder] = None
@@ -57,12 +57,12 @@ class CardioInput(BaseModel):
     high_ldl_cholesterol: Optional[BinaryEncoder] = None
     alcohol_consumption: Optional[OrdinalEncoder] = None
     stress_level: Optional[BinaryEncoder] = None
-    sleep_hours: Optional[float] = None
+    sleep_hours: Optional[float] = Field(None, gt=0.0)
     sugar_consumption: Optional[OrdinalEncoder] = None
-    triglyceride_level: Optional[float] = None
-    fasting_blood_sugar: Optional[float] = None
-    crp_level: Optional[float] = None
-    homocysteine_level: Optional[float] = None
+    triglyceride_level: Optional[float] = Field(None, gt=0.0)
+    fasting_blood_sugar: Optional[float] = Field(None, gt=0.0)
+    crp_level: Optional[float] = Field(None, gt=0.0)  # C-reactive protein level
+    homocysteine_level: Optional[float] = Field(None, gt=0.0)  # Homocysteine level
 
 class DiagnosisBase(BaseModel):
     id: Optional[str] = Field(None, alias="_id")

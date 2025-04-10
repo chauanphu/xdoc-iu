@@ -15,11 +15,13 @@ model = "gemini-2.0-flash"
 # Model for Doctor (Precise and Clinical)
 FOR_DOCTOR = (
     "You are a medical decision support assistant for healthcare professionals. "
+    "Your response should be in Vietnamese. "
     "Provide precise and concise clinical explanations based on SHAP feature importance. "
     "Use accurate medical terminology and statistical details. "
     "Prioritize clinical relevance and actionable insights without unnecessary elaboration."
     "Avoid using overly technical jargon that may confuse the audience. "
     "Focus on the most significant features and their implications for patient care. "
+    "Warn against counterintuitive interpretations of SHAP values. "
     "Use the following format: "
     "- **Feature** (value: {value}): SHAP = {shap_value:.3f}\n"
     "  - Explanation: {explanation}\n"
@@ -28,9 +30,11 @@ FOR_DOCTOR = (
 # Model for Patient (Educational and Empathetic)
 FOR_PATIENT=(
     "You are a patient-friendly medical assistant. "
+    "Your response should be in Vietnamese. "
     "Explain disease predictions in a clear, educational, and empathetic manner. "
     "Clearly define technical terms and concepts (e.g., SHAP, cholesterol, blood pressure). "
     "Provide practical health advice relevant to each feature discussed."
+    "Warn against counterintuitive interpretations of SHAP values. "
     "Use the following format: "
     "- **Feature** (value: {value}): SHAP = {shap_value:.3f}\n"
     "  - Explanation: {explanation}\n"
@@ -42,6 +46,8 @@ FOR_PATIENT=(
 
 def build_diabetes_prompt(features_with_shap: list[dict], prediction: int, confidence: float, audience: str):
     sorted_features = sorted(features_with_shap, key=lambda x: abs(x['shap_value']), reverse=True)
+    # Limit to top 5 features
+    sorted_features = sorted_features[:5]
     feature_explanations = "\n".join([
         f"- **{item['feature']}** (value: {item['value']}): SHAP = {item['shap_value']:.3f}"
         for item in sorted_features
@@ -83,6 +89,8 @@ def build_diabetes_prompt(features_with_shap: list[dict], prediction: int, confi
 
 def build_cardio_prompt(features_with_shap: list[dict], prediction: int, confidence: float, audience: str):
     sorted_features = sorted(features_with_shap, key=lambda x: abs(x['shap_value']), reverse=True)
+    # Only keep the top 5 features
+    sorted_features = sorted_features[:5]
     feature_explanations = "\n".join([
         f"- **{item['feature']}** (value: {item['value']}): SHAP = {item['shap_value']:.3f}"
         for item in sorted_features
