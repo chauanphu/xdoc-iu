@@ -53,11 +53,4 @@ app/
 ├── db/
 │   ├── __init__.py
 │   └── session.py                # Database session and connection management
-├── tests/
-│   ├── __init__.py
-│   ├── test_auth.py              # Unit/integration tests for authentication module
-│   ├── test_ml.py                # Tests for ML inference logic
-│   ├── test_explainability.py    # Tests for explainability endpoints and logic
-│   ├── test_patient.py           # Tests for patient profile management
-│   └── test_hospital.py          # Tests for hospital/tenant management
 └── Dockerfile                    # Containerization for deployment
