@@ -3,7 +3,7 @@ from fastapi import FastAPI
 # from model import load_model, predict
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-
+from db import *
 from routers import api_router
 
 # Initialize FastAPI app

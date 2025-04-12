@@ -12,7 +12,7 @@ class GenderEnum(str, Enum):
     OTHER = "OTHER"
 
 class PatientBaseModel(BaseModel):
-    id: Optional[str] = Field(alias="_id", default=None)  
+    id: Optional[ObjectId] = Field(alias="_id", default=None)  
     name: str
     dob: datetime
     gender: GenderEnum
@@ -25,16 +25,21 @@ class PatientBaseModel(BaseModel):
         arbitrary_types_allowed=True
 
 class PatientProfile(PatientBaseModel):
-    tenant_id: Optional[str] = None  # Patient may be standalone or assigned to a tenant
+    tenant_id: Optional[str]
     account_id: str = None
 
     class Config:
         validate_by_name = True
         arbitrary_types_allowed=True
 
-class PatientCreate(PatientProfile):
+class PatientCreate(BaseModel):
+    name: str
+    dob: datetime
+    gender: GenderEnum
+    age: int
     password: str  # Password for the patient, if applicable
     email: str  # Email for the patient, if applicable
+    tenant_id: Optional[str] = None  # Optional tenant ID for multi-tenancy
 
     @staticmethod
     def is_strong_password(password: str) -> bool:

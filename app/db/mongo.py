@@ -5,8 +5,8 @@ from hospital.context import get_current_tenant_id
 from typing import Optional
 
 # Create a global client instance
-client: AsyncIOMotorClient = AsyncIOMotorClient(settings.mongodb_uri)
-
+print("Connecting to MongoDB...: ", settings.MONGO_URI)
+client: AsyncIOMotorClient = AsyncIOMotorClient(settings.MONGO_URI)
 async def get_database() -> AsyncIOMotorDatabase:
     """
     Dependency function to retrieve the MongoDB database.
@@ -16,7 +16,7 @@ async def get_database() -> AsyncIOMotorDatabase:
     each tenant's data is prefixed in collection names.
     """
     # Using a single database for all tenants
-    db = client[settings.mongodb_db_name]
+    db = client[settings.MONGO_DB_NAME]
     return db
 
 async def get_tenant_database(tenant_id: Optional[str] = None) -> AsyncIOMotorDatabase:
