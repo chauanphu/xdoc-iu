@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --primary: 231 100% 66%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 231 100% 85%;
+    --secondary-foreground: 231 100% 15%;
+ 
+    --muted: 231 20% 96%;
+    --muted-foreground: 231 20% 46%;
+ 
+    --accent: 231 80% 76%;
+    --accent-foreground: 231 100% 20%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 231 30% 91%;
+    --input: 231 30% 91%;
+    --ring: 231 100% 66%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 231 30% 10%;
+    --foreground: 231 20% 98%;
+ 
+    --card: 231 30% 10%;
+    --card-foreground: 231 20% 98%;
+ 
+    --popover: 231 30% 10%;
+    --popover-foreground: 231 20% 98%;
+ 
+    --primary: 231 100% 66%;
+    --primary-foreground: 231 20% 98%;
+ 
+    --secondary: 231 100% 85%;
+    --secondary-foreground: 231 100% 15%;
+ 
+    --muted: 231 30% 20%;
+    --muted-foreground: 231 20% 65%;
+ 
+    --accent: 231 80% 76%;
+    --accent-foreground: 231 20% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 231 20% 98%;
+ 
+    --border: 231 30% 20%;
+    --input: 231 30% 20%;
+    --ring: 231 100% 66%;
+  }
+}
