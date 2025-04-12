@@ -12,6 +12,7 @@ COPY .python-version /app/python-version
 
 # Sync the project into a new environment, using the frozen lockfile
 WORKDIR /app
+COPY uv.lock /app/uv.lock
 RUN uv sync --frozen
 
 # Expose the port FastAPI will use

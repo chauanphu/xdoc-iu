@@ -2,9 +2,9 @@ services:
   app:
     build: .
     container_name: fastapi-xdoc
-    image: fastapi-xdoc:1.2.1
+    image: fastapi-xdoc:1.2.2
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 5s
       timeout: 2s
       retries: 20
@@ -13,6 +13,8 @@ services:
       - shared-network
     env_file:
       - .env
+    ports:
+      - "8000:8000"
     depends_on:
       - mongodb
 
@@ -22,10 +24,12 @@ services:
     restart: always
     volumes:
       - ./mongo_data:/data/db
-    ports:
-      - "27017:27017"
+    # ports:
+    #   - "27017:27017"
     networks:
       - my-network
+    environment:
+      - MONGO_INITDB_DATABASE=xdoc
 
 networks:
   my-network:

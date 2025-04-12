@@ -76,5 +76,5 @@ async def get_tenant_db(tenant_id: str) -> AsyncIOMotorDatabase:
     # return client[f"{settings.mongodb_db_name}_{tenant_id}"]
     
     # Using the main database
-    client = AsyncIOMotorClient(settings.mongodb_uri)
-    return client[settings.mongodb_db_name]
+    client = AsyncIOMotorClient(settings.MONGO_URI)
+    return client[settings.MONGODB_DB_NAME]
